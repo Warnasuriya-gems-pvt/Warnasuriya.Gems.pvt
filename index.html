@@ -1,0 +1,1051 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warnasuriya Gems Pvt | Premium Gemstones from Sri Lanka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-highlight: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --liquid-blur: blur(40px) saturate(180%) brightness(1.05);
+            --accent: #d4af37;
+            --accent-light: #f0d878;
+            --text: #f5f5f7;
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --dark-bg: #050505;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ─── PRELOADER ─── */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader img { height: 80px; filter: brightness(0) invert(1); margin-bottom: 24px; animation: pulse 2s infinite; }
+        .preloader-text {
+            font-size: 14px; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--text-secondary); animation: fadeUp 1s ease infinite alternate;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        @keyframes fadeUp { from{opacity:0.3; transform:translateY(5px)} to{opacity:1; transform:translateY(0)} }
+
+        /* ─── VIDEO BACKGROUND ─── */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; background: #000;
+        }
+        .video-bg video {
+            position: absolute; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%; transform: translate(-50%, -50%);
+            object-fit: cover; opacity: 0; transition: opacity 2.5s ease-in-out;
+        }
+        .video-bg video.active { opacity: 0.6; }
+
+        /* ─── LIQUID ORBS ─── */
+        .orbs {
+            position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.45;
+            animation: float 30s infinite ease-in-out;
+        }
+        .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(212,175,55,0.4), transparent 70%); top: -15%; left: -10%; }
+        .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(100,149,237,0.35), transparent 70%); bottom: -10%; right: -10%; animation-delay: -10s; }
+        .orb-3 { width: 450px; height: 450px; background: radial-gradient(circle, rgba(255,105,180,0.3), transparent 70%); top: 50%; left: 40%; animation-delay: -20s; }
+        .orb-4 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(50,205,50,0.2), transparent 70%); top: 20%; right: 20%; animation-delay: -5s; }
+        @keyframes float {
+            0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(50px,-70px) scale(1.1)} 66%{transform:translate(-40px,40px) scale(0.95)}
+        }
+
+        /* ─── NOISE ─── */
+        .noise {
+            position: fixed; inset: 0; z-index: -1; opacity: 0.035; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ─── GLASS UTILITY ─── */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: var(--liquid-blur);
+            -webkit-backdrop-filter: var(--liquid-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: inset 0 1px 1px var(--glass-highlight), var(--glass-shadow);
+            border-radius: 24px; position: relative; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .glass::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.04) 100%);
+        }
+        .glass:hover {
+            transform: translateY(-4px);
+            box-shadow: inset 0 1px 1px var(--glass-highlight), 0 20px 60px rgba(0,0,0,0.35);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 16px 40px; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.4s ease; pointer-events: none;
+        }
+        .header > * { pointer-events: auto; }
+        .header.scrolled {
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .logo-pill { display: flex; align-items: center; gap: 12px; padding: 10px 22px; border-radius: 100px; }
+        .logo-pill img { height: 38px; width: auto; filter: brightness(0) invert(1); }
+        .logo-text { font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+
+        .nav-links { display: flex; align-items: center; gap: 8px; padding: 6px; border-radius: 100px; }
+        .nav-links a {
+            color: var(--text); text-decoration: none; padding: 10px 20px; border-radius: 100px;
+            font-size: 13px; font-weight: 500; transition: all 0.3s; position: relative; z-index: 2;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.12); }
+        .nav-links .divider { width: 1px; height: 18px; background: rgba(255,255,255,0.2); }
+        .nav-links a.active { background: rgba(255,255,255,0.2); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 160px 20px 100px; position: relative;
+        }
+        .hero-content { max-width: 900px; position: relative; z-index: 2; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px;
+            border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--accent);
+            margin-bottom: 36px; border: 1px solid rgba(212,175,55,0.35); background: rgba(212,175,55,0.08);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 84px); font-weight: 800; line-height: 1.05;
+            margin-bottom: 28px; letter-spacing: -2px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 20px; color: var(--text-secondary); max-width: 640px; margin: 0 auto 44px; line-height: 1.7; font-weight: 400; }
+        .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            padding: 16px 36px; border-radius: 100px; font-weight: 600; font-size: 15px;
+            cursor: pointer; transition: all 0.35s ease; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px; border: none; position: relative; overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #b8941f); color: #000;
+            box-shadow: 0 4px 24px rgba(212,175,55,0.35);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(212,175,55,0.5); }
+        .btn-glass {
+            background: rgba(255,255,255,0.08); color: var(--text);
+            border: 1px solid var(--glass-border); backdrop-filter: blur(20px);
+        }
+        .btn-glass:hover { background: rgba(255,255,255,0.18); }
+
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            color: var(--text-secondary); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(10px)} }
+
+        /* ─── MARQUEE STATS ─── */
+        .stats-bar {
+            padding: 60px 0; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2);
+        }
+        .stats-track {
+            display: flex; gap: 80px; animation: marquee 30s linear infinite; width: max-content;
+        }
+        .stat-item { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+        .stat-item strong { font-size: 36px; font-weight: 800; color: var(--accent); }
+        .stat-item span { font-size: 15px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+        /* ─── SECTION UTILITIES ─── */
+        section { position: relative; z-index: 10; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+        .section-header { text-align: center; margin-bottom: 70px; }
+        .section-header h2 {
+            font-size: clamp(32px, 5vw, 52px); font-weight: 800; margin-bottom: 18px; letter-spacing: -1px;
+        }
+        .section-header p { color: var(--text-secondary); font-size: 18px; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+        .section-label {
+            display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+        }
+
+        /* ─── ABOUT ─── */
+        .about { padding: 140px 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .about-media { position: relative; }
+        .about-media .glass { padding: 20px; border-radius: 32px; }
+        .about-media img, .about-media video { width: 100%; border-radius: 20px; display: block; }
+        .about-badge {
+            position: absolute; bottom: -20px; right: -20px; padding: 20px 28px;
+            background: linear-gradient(135deg, var(--accent), #b8941f); color: #000;
+            border-radius: 24px; font-weight: 700; font-size: 14px; box-shadow: 0 10px 40px rgba(212,175,55,0.4);
+        }
+        .about-content h2 { font-size: 42px; font-weight: 800; margin-bottom: 24px; line-height: 1.15; }
+        .about-content p { color: var(--text-secondary); font-size: 17px; margin-bottom: 20px; line-height: 1.8; }
+        .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+        .about-stat { padding: 24px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+        .about-stat strong { display: block; font-size: 28px; color: var(--accent); margin-bottom: 6px; }
+        .about-stat span { font-size: 14px; color: var(--text-secondary); }
+
+        /* ─── CATEGORIES ─── */
+        .categories { padding: 100px 0; }
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .cat-card {
+            padding: 40px 24px; text-align: center; cursor: pointer; border-radius: 28px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s ease;
+        }
+        .cat-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-6px); border-color: rgba(255,255,255,0.2); }
+        .cat-icon { font-size: 40px; margin-bottom: 16px; }
+        .cat-card h3 { font-size: 18px; margin-bottom: 8px; }
+        .cat-card p { font-size: 14px; color: var(--text-secondary); }
+
+        /* ─── PRODUCTS ─── */
+        .products { padding: 120px 0; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
+        .product-card { padding: 0; cursor: pointer; border-radius: 28px; }
+        .product-card .card-media { width: 100%; aspect-ratio: 1; overflow: hidden; position: relative; border-radius: 28px 28px 0 0; }
+        .product-card .card-media img, .product-card .card-media video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+        .product-card:hover .card-media img, .product-card:hover .card-media video { transform: scale(1.1); }
+        .product-tag {
+            position: absolute; top: 16px; left: 16px; padding: 6px 14px; border-radius: 100px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15);
+        }
+        .product-card .card-body { padding: 28px; position: relative; z-index: 2; }
+        .product-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .product-card .meta { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+        .product-card .price-row { display: flex; justify-content: space-between; align-items: center; }
+        .product-card .price { font-size: 20px; font-weight: 800; color: var(--accent); }
+        .product-card .inquiry-btn { padding: 10px 20px; font-size: 13px; border-radius: 14px; }
+
+        /* ─── PROCESS ─── */
+        .process { padding: 140px 0; }
+        .process-steps { display: flex; gap: 32px; position: relative; }
+        .process-steps::before {
+            content: ''; position: absolute; top: 40px; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent); z-index: 0;
+        }
+        .step { flex: 1; text-align: center; position: relative; z-index: 1; }
+        .step-num {
+            width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; font-weight: 800; color: var(--accent);
+            background: rgba(212,175,55,0.1); border: 2px solid rgba(212,175,55,0.3);
+            backdrop-filter: blur(10px); box-shadow: 0 0 40px rgba(212,175,55,0.15);
+        }
+        .step h3 { font-size: 20px; margin-bottom: 12px; }
+        .step p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+
+        /* ─── TRUST ─── */
+        .trust { padding: 100px 0; text-align: center; }
+        .trust-logos { display: flex; justify-content: center; align-items: center; gap: 60px; flex-wrap: wrap; margin-top: 50px; opacity: 0.5; }
+        .trust-logos span { font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.15); padding: 12px 28px; border-radius: 100px; }
+
+        /* ─── TESTIMONIALS ─── */
+        .testimonials { padding: 140px 0; }
+        .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .testi-card { padding: 40px 32px; border-radius: 28px; }
+        .testi-stars { color: var(--accent); font-size: 18px; margin-bottom: 20px; letter-spacing: 4px; }
+        .testi-text { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 28px; font-style: italic; }
+        .testi-author { display: flex; align-items: center; gap: 16px; }
+        .testi-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #b8941f);
+            display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; font-size: 18px;
+        }
+        .testi-author div strong { display: block; font-size: 15px; }
+        .testi-author div span { font-size: 13px; color: var(--text-secondary); }
+
+        /* ─── GALLERY ─── */
+        .gallery { padding: 100px 0; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 280px; gap: 16px; }
+        .gallery-item {
+            border-radius: 24px; overflow: hidden; position: relative; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s ease;
+        }
+        .gallery-item:hover { transform: scale(1.02); border-color: rgba(255,255,255,0.3); z-index: 2; }
+        .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.1); }
+        .gallery-item.tall { grid-row: span 2; }
+        .gallery-item.wide { grid-column: span 2; }
+        .gallery-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            display: flex; align-items: flex-end; padding: 24px; opacity: 0; transition: opacity 0.4s;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay span { font-size: 14px; font-weight: 600; }
+
+        /* ─── FAQ ─── */
+        .faq { padding: 140px 0; }
+        .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+        .faq-item { border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); }
+        .faq-q {
+            padding: 24px 32px; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-weight: 600; font-size: 16px; transition: background 0.3s;
+        }
+        .faq-q:hover { background: rgba(255,255,255,0.04); }
+        .faq-q .icon { font-size: 20px; transition: transform 0.3s; color: var(--accent); }
+        .faq-item.open .faq-q .icon { transform: rotate(45deg); }
+        .faq-a {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 32px; color: var(--text-secondary); line-height: 1.8; font-size: 15px;
+        }
+        .faq-item.open .faq-a { max-height: 300px; padding: 0 32px 24px; }
+
+        /* ─── CONTACT ─── */
+        .contact { padding: 140px 0 100px; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .contact-info { padding: 48px; }
+        .contact-info h2 { font-size: 40px; margin-bottom: 16px; }
+        .contact-info > p { color: var(--text-secondary); margin-bottom: 48px; font-size: 17px; line-height: 1.7; }
+        .info-item {
+            display: flex; align-items: flex-start; gap: 18px; margin-bottom: 28px;
+            padding: 22px; border-radius: 20px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease;
+        }
+        .info-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.2); transform: translateX(4px); }
+        .info-icon {
+            width: 48px; height: 48px; border-radius: 16px; background: rgba(212,175,55,0.12);
+            color: var(--accent); display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        }
+        .info-item div strong { display: block; margin-bottom: 6px; font-weight: 600; font-size: 15px; }
+        .info-item div a, .info-item div span { color: var(--text-secondary); text-decoration: none; font-size: 15px; transition: color 0.3s; display: block; line-height: 1.6; }
+        .info-item div a:hover { color: var(--accent); }
+
+        .contact-form { padding: 48px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 16px 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.25);
+            color: var(--text); font-family: inherit; font-size: 15px; outline: none; transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--accent); background: rgba(0,0,0,0.4);
+            box-shadow: 0 0 0 4px rgba(212,175,55,0.1);
+        }
+        .form-group textarea { min-height: 140px; resize: vertical; }
+
+        /* ─── FOOTER ─── */
+        footer { border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.4); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding: 80px 40px 60px; max-width: 1200px; margin: 0 auto; }
+        .footer-brand img { height: 50px; filter: brightness(0) invert(1); margin-bottom: 20px; }
+        .footer-brand p { color: var(--text-secondary); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a {
+            width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--text);
+            text-decoration: none; font-size: 18px; transition: all 0.3s;
+        }
+        .footer-social a:hover { background: var(--accent); color: #000; border-color: var(--accent); transform: translateY(-3px); }
+        .footer-col h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; color: var(--accent); }
+        .footer-col a {
+            display: block; color: var(--text-secondary); text-decoration: none; font-size: 15px;
+            margin-bottom: 14px; transition: all 0.3s;
+        }
+        .footer-col a:hover { color: var(--text); transform: translateX(4px); }
+        .footer-bottom {
+            text-align: center; padding: 30px; color: var(--text-secondary); font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .footer-bottom strong { color: var(--accent); }
+
+        /* ─── NOTIFICATIONS ─── */
+        .notification-container {
+            position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 12px; pointer-events: none;
+        }
+        .toast {
+            padding: 18px 28px; border-radius: 20px; color: #fff; font-weight: 600; font-size: 14px;
+            animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); pointer-events: auto;
+            max-width: 400px; display: flex; align-items: center; gap: 14px;
+            border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(30px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .toast.success { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); }
+        .toast.info { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.35); }
+        .toast.warning { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.35); }
+        @keyframes slideIn { from{transform:translateX(120%); opacity:0} to{transform:translateX(0); opacity:1} }
+        @keyframes slideOut { to{transform:translateX(120%); opacity:0} }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+            .cat-grid { grid-template-columns: repeat(2, 1fr); }
+            .testi-grid { grid-template-columns: 1fr; }
+            .process-steps { flex-direction: column; gap: 48px; }
+            .process-steps::before { display: none; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            .header { padding: 14px 20px; }
+            .logo-text { display: none; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .container { padding: 0 20px; }
+            .cat-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-item.wide, .gallery-item.tall { grid-column: span 1; grid-row: span 1; }
+            .footer-grid { grid-template-columns: 1fr; padding: 60px 20px 40px; }
+            .about-stats { grid-template-columns: 1fr; }
+            .stats-track { gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <img src="logo.png" alt="W.P. Gems">
+        <div class="preloader-text">Loading Experience</div>
+    </div>
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="video-bg">
+        <video class="active" muted loop playsinline><source src="video1.mp4" type="video/mp4"></video>
+        <video muted loop playsinline><source src="video2.mp4" type="video/mp4"></video>
+        <video muted loop playsinline><source src="video3.mp4" type="video/mp4"></video>
+    </div>
+
+    <!-- ORBS -->
+    <div class="orbs">
+        <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div>
+    </div>
+    <div class="noise"></div>
+
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="glass logo-pill">
+            <img src="logo.png" alt="W.P. Gems Logo">
+            <span class="logo-text">W.P. GEMS</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <nav class="glass nav-links">
+                <a href="index.html" class="active">Frontend</a>
+                <span class="divider"></span>
+                <a href="admin.html">Backend</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="showToast('Menu coming soon', 'info')">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge"><span>✦</span> Ceylon's Finest Since 1995</div>
+                <h1>Warnasuriya Gems Pvt</h1>
+                <p>Discover nature's most exquisite treasures. Ethically sourced, precision-cut gemstones delivered from the heart of Sri Lanka to the world's most discerning collectors.</p>
+                <div class="cta-group">
+                    <a href="#collection" class="btn btn-primary">Explore Collection</a>
+                    <a href="#contact" class="btn btn-glass">Contact Us</a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <span style="font-size:20px;">↓</span>
+            </div>
+        </section>
+
+        <!-- STATS MARQUEE -->
+        <section class="stats-bar">
+            <div class="stats-track">
+                <div class="stat-item"><strong>500+</strong><span>Stones Exported</span></div>
+                <div class="stat-item"><strong>28</strong><span>Years Experience</span></div>
+                <div class="stat-item"><strong>100%</strong><span>Natural Gems</span></div>
+                <div class="stat-item"><strong>45+</strong><span>Countries Served</span></div>
+                <div class="stat-item"><strong>GIA</strong><span>Certified Partner</span></div>
+                <div class="stat-item"><strong>24/7</strong><span>WhatsApp Support</span></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="stat-item"><strong>500+</strong><span>Stones Exported</span></div>
+                <div class="stat-item"><strong>28</strong><span>Years Experience</span></div>
+                <div class="stat-item"><strong>100%</strong><span>Natural Gems</span></div>
+                <div class="stat-item"><strong>45+</strong><span>Countries Served</span></div>
+                <div class="stat-item"><strong>GIA</strong><span>Certified Partner</span></div>
+                <div class="stat-item"><strong>24/7</strong><span>WhatsApp Support</span></div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about" id="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-media reveal">
+                        <div class="glass">
+                            <img src="gem1.jpg" alt="Premium Gemstone">
+                        </div>
+                        <div class="about-badge">Est. 1995</div>
+                    </div>
+                    <div class="about-content reveal">
+                        <span class="section-label">Our Story</span>
+                        <h2>Three Generations of Gemstone Excellence</h2>
+                        <p>Founded in the gem-rich soils of Ratnapura, Warnasuriya Gems has grown from a family workshop into one of Sri Lanka's most trusted gemstone exporters. We specialize in unheated, natural Ceylon sapphires, padparadschas, and rare fancy colored stones.</p>
+                        <p>Every stone in our collection is hand-selected by our master gemologists, cut to maximize brilliance, and certified by internationally recognized laboratories.</p>
+                        <div class="about-stats">
+                            <div class="about-stat"><strong>500+</strong><span>Happy Clients Worldwide</span></div>
+                            <div class="about-stat"><strong>0</strong><span>Treated Stones Sold</span></div>
+                            <div class="about-stat"><strong>100%</strong><span>Ethical Sourcing</span></div>
+                            <div class="about-stat"><strong>GIA/CGL</strong><span>Certified Stones</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIES -->
+        <section class="categories">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Browse</span>
+                    <h2>Gemstone Categories</h2>
+                    <p>From royal blue sapphires to delicate padparadschas, find your perfect stone.</p>
+                </div>
+                <div class="cat-grid reveal">
+                    <div class="cat-card glass" onclick="showToast('Filtering Blue Sapphires...', 'info')">
+                        <div class="cat-icon">💎</div>
+                        <h3>Blue Sapphire</h3>
+                        <p>Cornflower to Royal Blue</p>
+                    </div>
+                    <div class="cat-card glass" onclick="showToast('Filtering Pink Sapphires...', 'info')">
+                        <div class="cat-icon">💖</div>
+                        <h3>Pink Sapphire</h3>
+                        <p>Soft Rose to Hot Pink</p>
+                    </div>
+                    <div class="cat-card glass" onclick="showToast('Filtering Padparadscha...', 'info')">
+                        <div class="cat-icon">🌸</div>
+                        <h3>Padparadscha</h3>
+                        <p>Rare Peach-Pink Beauty</p>
+                    </div>
+                    <div class="cat-card glass" onclick="showToast('Filtering Fancy Gems...', 'info')">
+                        <div class="cat-icon">✨</div>
+                        <h3>Fancy Colors</h3>
+                        <p>Yellow, Green & More</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section class="products" id="collection">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Collection</span>
+                    <h2>Featured Gemstones</h2>
+                    <p>Click any stone to receive a detailed certificate and pricing within minutes.</p>
+                </div>
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Pink Sapphire Oval')">
+                        <div class="card-media">
+                            <img src="gem1.jpg" alt="Pink Sapphire">
+                            <span class="product-tag">Hot</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>Pink Sapphire</h3>
+                            <div class="meta">Oval Cut • 1.45 CT • Unheated • Ceylon</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Golden Heart Beryl')">
+                        <div class="card-media">
+                            <img src="gem2.jpg" alt="Golden Beryl">
+                            <span class="product-tag">Rare</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>Golden Beryl</h3>
+                            <div class="meta">Heart Cut • 3.20 CT • VVS Clarity</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Padparadscha Cushion')">
+                        <div class="card-media">
+                            <video muted loop playsinline autoplay><source src="video3.mp4" type="video/mp4"></video>
+                            <span class="product-tag" style="color:var(--accent);">Premium</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>Padparadscha</h3>
+                            <div class="meta">Cushion Cut • 2.10 CT • Peach-Pink</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 4 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Royal Blue Sapphire')">
+                        <div class="card-media">
+                            <video muted loop playsinline autoplay><source src="video2.mp4" type="video/mp4"></video>
+                            <span class="product-tag">Top</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>Royal Blue Sapphire</h3>
+                            <div class="meta">Oval Cut • 2.85 CT • Cornflower</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 5 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Purple Spinel')">
+                        <div class="card-media">
+                            <img src="gem1.jpg" alt="Purple Spinel" style="filter: hue-rotate(60deg);">
+                        </div>
+                        <div class="card-body">
+                            <h3>Purple Spinel</h3>
+                            <div class="meta">Round Cut • 1.80 CT • Eye Clean</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 6 -->
+                    <div class="glass product-card reveal" onclick="notifyProduct('Yellow Sapphire')">
+                        <div class="card-media">
+                            <img src="gem2.jpg" alt="Yellow Sapphire" style="filter: hue-rotate(180deg) saturate(1.5);">
+                            <span class="product-tag">New</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>Yellow Sapphire</h3>
+                            <div class="meta">Cushion Cut • 4.10 CT • Canary</div>
+                            <div class="price-row">
+                                <span class="price">Inquire</span>
+                                <button class="btn btn-glass inquiry-btn">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESS -->
+        <section class="process">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">How We Work</span>
+                    <h2>From Mine to Market</h2>
+                    <p>Our transparent process ensures you know exactly where your gemstone comes from.</p>
+                </div>
+                <div class="process-steps reveal">
+                    <div class="step">
+                        <div class="step-num">01</div>
+                        <h3>Ethical Sourcing</h3>
+                        <p>We partner directly with licensed miners in Ratnapura and Elahera, ensuring fair wages and sustainable practices.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">02</div>
+                        <h3>Expert Cutting</h3>
+                        <p>Our master cutters maximize each stone's optical performance while preserving carat weight.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">03</div>
+                        <h3>Certification</h3>
+                        <p>Every gem over 1ct receives a GIA, CGL, or GICL certificate guaranteeing authenticity.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">04</div>
+                        <h3>Global Delivery</h3>
+                        <p>Fully insured FedEx/UPS shipping with real-time tracking to your door.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUST -->
+        <section class="trust">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Trust</span>
+                    <h2>Certified & Trusted</h2>
+                </div>
+                <div class="trust-logos reveal">
+                    <span>GIA Certified</span>
+                    <span>CGL Colombo</span>
+                    <span>GICL</span>
+                    <span>NGJA Sri Lanka</span>
+                    <span>ISO 9001</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Testimonials</span>
+                    <h2>What Collectors Say</h2>
+                </div>
+                <div class="testi-grid reveal">
+                    <div class="glass testi-card">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-text">"The padparadscha I purchased exceeded every expectation. The video did not do it justice — the color shift in natural light is magical. Warnasuriya is now my only source for Ceylon stones."</p>
+                        <div class="testi-author">
+                            <div class="testi-avatar">JD</div>
+                            <div><strong>James Davidson</strong><span>Collector, London</span></div>
+                        </div>
+                    </div>
+                    <div class="glass testi-card">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-text">"I've bought from dealers in Bangkok, Jaipur, and Bogotá. The transparency and pricing from W.P. Gems is unmatched. The GIA certificate arrived before the stone did."</p>
+                        <div class="testi-author">
+                            <div class="testi-avatar">AK</div>
+                            <div><strong>Anna Kowalski</strong><span>Jewelry Designer, Warsaw</span></div>
+                        </div>
+                    </div>
+                    <div class="glass testi-card">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-text">"Sahan was incredibly patient, sending videos in multiple lighting conditions. The 5ct blue sapphire is the centerpiece of my wife's anniversary ring. Absolute professionals."</p>
+                        <div class="testi-author">
+                            <div class="testi-avatar">RM</div>
+                            <div><strong>Raj Malhotra</strong><span>Private Client, Dubai</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY -->
+        <section class="gallery">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Gallery</span>
+                    <h2>Stone Spotlight</h2>
+                </div>
+                <div class="gallery-grid reveal">
+                    <div class="gallery-item tall">
+                        <img src="gem1.jpg" alt="Pink Sapphire">
+                        <div class="gallery-overlay"><span>Pink Sapphire • 1.45ct</span></div>
+                    </div>
+                    <div class="gallery-item wide">
+                        <video muted loop playsinline autoplay><source src="video2.mp4" type="video/mp4"></video>
+                        <div class="gallery-overlay"><span>Royal Blue Sapphire • 2.85ct</span></div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="gem2.jpg" alt="Golden Beryl">
+                        <div class="gallery-overlay"><span>Golden Beryl • 3.20ct</span></div>
+                    </div>
+                    <div class="gallery-item tall">
+                        <video muted loop playsinline autoplay><source src="video3.mp4" type="video/mp4"></video>
+                        <div class="gallery-overlay"><span>Padparadscha • 2.10ct</span></div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="gem1.jpg" alt="Purple Spinel" style="filter: hue-rotate(60deg);">
+                        <div class="gallery-overlay"><span>Purple Spinel • 1.80ct</span></div>
+                    </div>
+                    <div class="gallery-item wide">
+                        <img src="gem2.jpg" alt="Yellow Sapphire" style="filter: hue-rotate(180deg) saturate(1.5);">
+                        <div class="gallery-overlay"><span>Yellow Sapphire • 4.10ct</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">FAQ</span>
+                    <h2>Common Questions</h2>
+                </div>
+                <div class="faq-list reveal">
+                    <div class="faq-item open">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            Do you ship internationally?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="faq-a">Yes, we ship worldwide via FedEx and UPS with full insurance and tracking. All customs documentation is handled by our logistics team.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            Are your gemstones treated or natural?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="faq-a">We specialize in 100% natural, unheated gemstones. Any treated stones are clearly labeled as such with full disclosure. Most of our inventory comes with GIA or CGL certificates.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            What payment methods do you accept?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="faq-a">We accept bank wire transfers, PayPal, Wise (TransferWise), and major credit cards for purchases under $10,000. For larger transactions, we recommend wire transfer for security.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            Can I request a video of a specific stone?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="faq-a">Absolutely. We provide high-resolution videos in natural daylight, indoor lighting, and shade upon request. We want you to see exactly what you're buying.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            What is your return policy?
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="faq-a">We offer a 7-day inspection period from delivery. If the stone does not match the description or certificate, you may return it for a full refund minus shipping costs.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="glass contact-info reveal">
+                        <span class="section-label">Contact</span>
+                        <h2>Let's Talk Stones</h2>
+                        <p>Whether you're looking for a specific carat weight, a custom cut, or investment-grade stones, we're here to help.</p>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">📱</div>
+                            <div>
+                                <strong>Phone / WhatsApp</strong>
+                                <a href="tel:+94772822029">+94 77 282 2029</a>
+                                <a href="tel:+94717928867">+94 71 792 8867</a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">✉</div>
+                            <div>
+                                <strong>Email</strong>
+                                <a href="mailto:sahansanthush123wp@gmail.com">sahansanthush123wp@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div>
+                                <strong>Location</strong>
+                                <span>Colombo, Sri Lanka<br>Ratnapura Showroom Available</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">🕐</div>
+                            <div>
+                                <strong>Business Hours</strong>
+                                <span>Mon - Sat: 9:00 AM - 6:00 PM<br>Sunday: By Appointment</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="glass contact-form reveal" onsubmit="handleContact(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" required placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email or WhatsApp Number</label>
+                            <input type="text" required placeholder="+94 7X XXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label>Gemstone of Interest</label>
+                            <select>
+                                <option>General Inquiry</option>
+                                <option>Blue Sapphire</option>
+                                <option>Pink Sapphire</option>
+                                <option>Padparadscha</option>
+                                <option>Yellow Sapphire</option>
+                                <option>Other / Custom Request</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Budget Range (USD)</label>
+                            <select>
+                                <option>Not Sure</option>
+                                <option>$500 - $2,000</option>
+                                <option>$2,000 - $5,000</option>
+                                <option>$5,000 - $10,000</option>
+                                <option>$10,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea placeholder="Tell us what you're looking for — carat weight, cut, color preference..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="logo.png" alt="W.P. Gems">
+                <p>Sri Lanka's trusted source for natural, unheated Ceylon gemstones. Exporting brilliance to collectors and jewelers worldwide since 1995.</p>
+                <div class="footer-social">
+                    <a href="#">📘</a>
+                    <a href="#">📸</a>
+                    <a href="#">💬</a>
+                    <a href="#">▶</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="#collection">Blue Sapphires</a>
+                <a href="#collection">Pink Sapphires</a>
+                <a href="#collection">Padparadscha</a>
+                <a href="#collection">Fancy Colors</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#about">Our Story</a>
+                <a href="#">Ethical Sourcing</a>
+                <a href="#">Certifications</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Shipping Info</a>
+                <a href="#">Returns</a>
+                <a href="#">FAQ</a>
+                <a href="mailto:sahansanthush123wp@gmail.com">Email Us</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 <strong>Warnasuriya Gems Pvt</strong> (W.P. GEMS PVT). All rights reserved. | +94 77 282 2029 | +94 71 792 8867</p>
+        </div>
+    </footer>
+
+    <!-- NOTIFICATIONS -->
+    <div class="notification-container" id="notifications"></div>
+
+    <script>
+        // ─── PRELOADER ───
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // ─── VIDEO ROTATOR ───
+        const videos = document.querySelectorAll('.video-bg video');
+        let currentVideo = 0;
+        videos.forEach(v => v.play());
+        setInterval(() => {
+            videos[currentVideo].classList.remove('active');
+            currentVideo = (currentVideo + 1) % videos.length;
+            videos[currentVideo].classList.add('active');
+            videos[currentVideo].play();
+        }, 8000);
+
+        // ─── HEADER SCROLL ───
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // ─── NOTIFICATIONS ───
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('notifications');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '✓', info: 'ℹ', warning: '⚡' };
+            toast.innerHTML = `<span style="font-size:20px;">${icons[type] || '•'}</span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 4500);
+        }
+
+        function notifyProduct(gemName) {
+            showToast(`Interested in ${gemName}? We'll contact you shortly!`, 'info');
+        }
+
+        function handleContact(e) {
+            e.preventDefault();
+            showToast('Message sent! Warnasuriya Gems will contact you soon.', 'success');
+            e.target.reset();
+        }
+
+        // ─── FAQ ACCORDION ───
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        }
+
+        // ─── SCROLL REVEAL ───
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Optional: stop observing once revealed
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ─── SMOOTH SCROLL FOR ANCHORS ───
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
